@@ -1,3 +1,16 @@
+const avatar = document.querySelector("#player");
+const coin = document.querySelector("#coin");
+const coins = document.querySelector("#coins");
+let coinsNumber = 0;
+
+avatar.style.top = "100px";
+avatar.style.left = "100px";
+
+coin.style.top = "600px";
+coin.style.left = "800px";
+
+coins.innerHTML = coinsNumber;
+
 function isTouching(a, b) {
     const aRect = a.getBoundingClientRect();
     const bRect = b.getBoundingClientRect();
@@ -10,12 +23,6 @@ function isTouching(a, b) {
         aRect.left > bRect.left + bRect.width
     );
 }
-
-const avatar = document.querySelector("#player");
-const coin = document.querySelector("#coin");
-
-avatar.style.top = "100px";
-avatar.style.left = "100px";
 
 const extractPos = (pos) => {
     if (!pos) return 0;
@@ -44,5 +51,9 @@ window.addEventListener("keyup", function (e) {
     } else if (e.key === "ArrowLeft" || e.key === "Left") {
         avSt.left = move(avSt.left, -50, -1);
     }
-    isTouching(avatar, coin) && moveCoin();
+    if (isTouching(avatar, coin)) {
+        moveCoin();
+        coinsNumber++;
+    }
+    coins.innerHTML = coinsNumber;
 });
