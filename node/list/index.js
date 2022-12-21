@@ -9,10 +9,30 @@ const util = require("util");
 // ------- Methode 3 ------ //
 const { lstat } = fs.promises;
 
-fs.readdir(process.cwd(), (err, filenames) => {
+fs.readdir(process.cwd(), async (err, filenames) => {
     if (err) {
         console.error(err);
     }
+
+    const statPromises = filenames.map((filename) => lstat(filename));
+
+    const allStats = await Promise.all(statPromises);
+
+    allStats.forEach((stats) => {
+        const index = allStats.indexOf(stats);
+
+        console.log(filenames[index], stats.isFile());
+    });
+
+    // try {
+    //     for (let filename of filenames) {
+    //         const stats = await lstat(filename);
+
+    //         console.log(filename, stats.isFile());
+    //     }
+    // } catch (err) {
+    //     console.log(err);
+    // }
 
     // ------- Methode 1 -- not the best ------ //
     // const allStats = Array(filenames.length).fill(null);
